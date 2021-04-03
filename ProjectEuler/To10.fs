@@ -28,3 +28,13 @@ let Problem2_1 :int =
     FibList (0, 1)
     |> List.filter (fun x -> x % 2 = 0)
     |> List.sum
+
+let Problem3 =
+    let given = 600851475143L
+    let rec pf num div =
+        if ((float num) |> sqrt  |> int64) < div then [num]
+        elif num % div = 0L then div :: pf (num / div) div
+        else pf num (div + 1L)
+    pf given 2L |> List.last
+    
+        
