@@ -70,3 +70,6 @@ let Problem5 =
         map
 
     toDict.Aggregate( 1,fun  acc pair -> acc * (pown pair.Key pair.Value))
+
+let Problem6 =
+    pown (100*101/2) 2 - ( [1..100]|>List.fold (fun acc x -> acc + x * x)  0)
