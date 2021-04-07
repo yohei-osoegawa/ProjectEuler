@@ -92,3 +92,30 @@ let Problem8 =
     given.ToCharArray() |> Array.windowed 13 |> Array.map (Array.map (fun x -> int64 x - 48L)) |> Array.map (Array.reduce ((*))) 
     |> Array.max
 
+let Problem9 =
+    // 複雑な2重ループを再帰で行うとややこしいので、素直にforを使う
+    let mutable result = 0
+    for a = 1 to 998 do
+        for b = a + 1 to 1000 - 2 * a do
+            let c = 1000 - a - b
+            if a * a + b * b = c * c then result <- a * b * c
+    result
+
+open System.Linq
+open System.Collections.Generic;
+let Problem10 =
+    // エラトステネスの篩を用いて素数表を作っていく。簡単のためふるい分けた値は０に変える
+    let array = Enumerable.Range(2,1_999_999).ToArray()
+    let max = 2_000_000 |> float |> sqrt |> int
+    let rec yieldPfArray i =
+        if i > max then ()
+        elif array.[i-2] = 0 then yieldPfArray (i + 1)
+        else
+            let mutable j = 1
+            while i * j <= 2_000_000 do
+                array.[i*j-2] <- 0
+            yieldPfArray (i + 1)
+    yieldPfArray 2
+    array.Select(int64).Sum()
+
+
