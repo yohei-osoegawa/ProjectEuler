@@ -169,5 +169,27 @@ let Problem11 =
     ] |> List.map(fun [x1;x2;x3;x4] -> x1*x2*x3*x4)
     |> List.max
 
+let Problem12 =
+    // 三角数は(n+1)C2で表される。また約数の個数は素因数分解から求められる
+    // ここはメモ化で高速化の余地がある
+    let rec pfd n i = 
+        let max = n |> float |> sqrt |> int
+        if i > max then [n] 
+        elif n % i = 0 then i :: pfd (n/i) i
+        else pfd (n) (i+1)
+
+    // ここは表記方法に改善の余地あるかも
+    seq{
+        let mutable i = 2
+        while true do
+            yield i
+            i<-i+1
+    } |> Seq.map (fun i -> pfd i (2))
+    |> Seq.pairwise
+    |> Seq.map ((fun (x1, x2) -> [x1 ; x2]) >> List. collect id)
+    |> Seq.map (List.countBy id) // countBy id も遅い、Dictionaryを使って手続き型で書くと早いはず
+    |> Seq.map (List.map (fun (x, count) -> if x = 2 then count - 1 else count) ) // ここで2で割ることも実施
+    |> Seq.map (List.fold (fun acc next -> acc * (next + 1)) (1) )
+    |> Seq.find ((<) 500)
 
 
