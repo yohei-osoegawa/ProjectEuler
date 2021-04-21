@@ -306,9 +306,29 @@ let given13 =
 
 let Problem13 = 
     // 考え方は筆算と同じ、int64の範囲内で扱える10桁同士の足し算を行い、繰り上がりを上の桁に送る
-    given13.Split ([|"\n"|], System.StringSplitOptions.None) 
-    |> Array.map(fun x -> x.ToCharArray() |> Array.chunkBySize (10) |> Array.map (fun x -> new System.String(x) |> int64)) // 10ずつのint64型のchunkへ分割
+    let chunks :int64[][] =
+        given13.Split ([|"\n"|], System.StringSplitOptions.None) 
+        |> Array.map(fun x -> 
+            x.ToCharArray() |> Array.chunkBySize (10) |> Array.map (fun x -> new System.String(x) |> int64)) // 10ずつのint64型のchunkへ分割
     // これ以降は発想が手続き型のため、forループとインデックスを使う
+    let result =
+        let mutable resultChunk : Option<int64[]>  = None
+        for numberChunk in chunks do
+            match resultChunk with
+            | None -> resultChunk <- Some ([|0L|].Concat(numberChunk).ToArray()) // 最上位の桁あふれ処理のための項を作っておく
+            | Some v ->
+                let mutable over = 0L
+                for i in [5..-1..0] do     // 末尾から計算する
+                    let sum = v.[i] + numberChunk.ElementAtOrDefault(i-1) + over
+                    v.[i] <- sum % 10_000_000_000L
+                    over <- sum / 10_000_000_000L
+        resultChunk.Value
+    result |>  Array.map (fun x -> x.ToString("d10")) |> Array.reduce (fun acc x -> $"{acc}{x}") 
+    |> fun x -> x.TrimStart([|'0'|]).[..9] 
+
+
+    
+
 
 
 
