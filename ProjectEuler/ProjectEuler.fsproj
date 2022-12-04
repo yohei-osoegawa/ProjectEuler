@@ -6,7 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="To10.fs" />
+    <Compile Include="No13.fs" />
+    <Compile Include="No12.fs" />
+    <Compile Include="No11.fs" />
+    <Compile Include="No10.fs" />
+    <Compile Include="No9.fs" />
+    <Compile Include="No8.fs" />
+    <Compile Include="No7.fs" />
+    <Compile Include="No6.fs" />
+    <Compile Include="No5.fs" />
+    <Compile Include="No4.fs" />
+    <Compile Include="No3.fs" />
+    <Compile Include="No2.fs" />
+    <Compile Include="No1.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
